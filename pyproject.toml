@@ -1,14 +1,17 @@
 [tool.poetry]
 name = "project-name"
-version = "0.0.1"
+version = "0.0.2"
 description = ""
 authors = ["Petr Lavrov <calmmage@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
+# calmlib>=1.0.11
 calmlib = { git = "https://github.com/calmmage/calmlib.git", branch = "main" }
+# botspot>=0.2.19
 botspot = { git = "https://github.com/calmmage/botspot.git", branch = "main" }
+
 loguru = ">=0.7"
 # for parsing version
 toml = ">=0.10"

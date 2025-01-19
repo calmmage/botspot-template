@@ -19,10 +19,10 @@ services:
     depends_on:
       - mongodb
 
-  api:
+  bot:
     build: 
       context: .
-      dockerfile: app/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "${API_PORT}:8000"
     environment:
