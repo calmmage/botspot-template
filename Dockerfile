@@ -1,4 +1,4 @@
-FROM python:3.11-slim-buster
+FROM python:3.12-slim-bookworm
 
 WORKDIR /app
 
@@ -10,12 +10,12 @@ RUN apt-get update && \
 # Install poetry
 RUN pip install --no-cache-dir poetry
 
-# Copy only dependency files first
-COPY pyproject.toml ./
+# Copy the entire project files
+COPY . .
 
 # Configure poetry and install dependencies
-RUN poetry config virtualenvs.create false && \
-    poetry install --only main --no-interaction --no-ansi
+RUN poetry config virtualenvs.create false 
+RUN poetry install --only main,extras
 
 # Copy application code
 COPY app/ .

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "project-name"
-version = "0.0.2"
+version = "0.0.1"
 description = ""
 authors = ["Petr Lavrov <calmmage@gmail.com>"]
 readme = "README.md"
@@ -102,7 +102,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [template]
-version = "0.3.0"  # optimize pyproject dependencies
-url = "https://github.com/calmmage/python-project-template.git"
-author = "Petr Lavrov <petrlavrov@calmmage.com>"
-description = "A template for creating a bot using calmapp and bot-lib"
+version = "0.0.3"  # optimize pyproject dependencies
+url = "https://github.com/calmmage/botspot-template.git"
+author = "Petr Lavrov <me@petrlavrov.com>"
+description = "A template for creating a bot using botspot"
