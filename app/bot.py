@@ -1,5 +1,3 @@
-from os import getenv
-
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -22,8 +20,8 @@ dp.include_router(main_router)
 dp.include_router(settings_router)
 
 
-def main() -> None:
-    setup_logger(logger)
+def main(debug=False) -> None:
+    setup_logger(logger, level="DEBUG" if debug else "INFO")
 
     # Initialize Bot instance with a default parse mode
     bot = Bot(
@@ -35,7 +33,7 @@ def main() -> None:
         bot=bot,
         error_handler={"enabled": True},
         ask_user={"enabled": True},
-        bot_commands_menu={"enabled": True}
+        bot_commands_menu={"enabled": True},
     )
 
     # Setup dispatcher with our components
