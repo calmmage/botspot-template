@@ -19,6 +19,8 @@ loguru = ">=0.7"
 # for parsing version
 toml = ">=0.10"
 python-dotenv = "*"
+pydantic = "^2.10.6"
+pydantic-settings = "^2.7.1"
 
 [tool.poetry.group.extras.dependencies]
 # dependencies for extra features
@@ -105,7 +107,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [template]
-version = "0.0.7"
+version = "0.0.8"
 url = "https://github.com/calmmage/botspot-template.git"
 author = "Petr Lavrov <me@petrlavrov.com>"
 description = "A template for creating a bot using botspot"
