@@ -5,7 +5,7 @@ description = ""
 authors = ["Petr Lavrov <calmmage@gmail.com>"]
 readme = "README.md"
 packages = [
-    { include = "project_name", from = "." },
+    { include = "app", from = "." },
 ]
 
 [tool.poetry.dependencies]
