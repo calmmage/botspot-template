@@ -40,13 +40,16 @@ poetry run python run.py
 ```
 .
 ├── app/
-│   ├── app.py          # Core app
-│   ├── bot.py          # Bot setup & launcher
+│   ├── _app.py          # Core app
+│   ├── bot.py           # Bot setup & launcher
+│   ├── router.py          
 │   └── __init__.py
 ├── example.env         # Example environment variables
-├── pyproject.toml     # Project dependencies
+├── pyproject.toml      # Project dependencies
 ├── README.md
-└── run.py            # Main entry point - for docker etc.
+├── Dockerfile
+├── docker-compose.yaml
+└── run.py              # Main entry point - for docker etc.
 ```
 
 ## Configuration
