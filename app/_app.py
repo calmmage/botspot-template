@@ -1,12 +1,11 @@
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings
-from typing import Optional
 
 
 class AppConfig(BaseSettings):
     """Basic app configuration"""
 
-    telegram_bot_token: Optional[SecretStr] = None
+    telegram_bot_token: SecretStr
 
     class Config:
         env_file = ".env"
