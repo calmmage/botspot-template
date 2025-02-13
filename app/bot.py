@@ -1,7 +1,7 @@
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from calmlib.utils import setup_logger
+from calmlib.utils import setup_logger, heartbeat_for_sync
 from dotenv import load_dotenv
 from loguru import logger
 from pathlib import Path
@@ -20,12 +20,14 @@ dp.include_router(main_router)
 dp.include_router(settings_router)
 
 
+@heartbeat_for_sync(app.name)
 def main(debug=False) -> None:
     setup_logger(logger, level="DEBUG" if debug else "INFO")
 
     # Initialize Bot instance with a default parse mode
     bot = Bot(
-        token=app.config.telegram_bot_token.get_secret_value(), default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+        token=app.config.telegram_bot_token.get_secret_value(),
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
 
     # Initialize BotManager with default components
