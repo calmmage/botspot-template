@@ -90,6 +90,16 @@ langchain-anthropic = "*"
 [tool.poetry.group.test.dependencies]
 pytest = ">=6"
 #pytest-mongodb = "*"
+black = {extras = ["jupyter"], version = "^25.1.0"}
+flake8 = "^7.1.1"
+flake8-docstrings = "^1.7.0"
+flake8-bugbear = "^24.12.12"
+flake8-comprehensions = "^3.16.0"
+flake8-simplify = "^0.21.0"
+isort = "^6.0.0"
+vulture = "^2.14"
+pytest-cov = "^6.0.0"
+pyupgrade = "^3.19.1"
 
 [tool.poetry.group.docs.dependencies]
 #mkdocs = ">=1.6"
@@ -115,7 +125,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [template]
-version = "0.1.1"
+version = "0.1.2"
 url = "https://github.com/calmmage/botspot-template.git"
 author = "Petr Lavrov <me@petrlavrov.com>"
 description = "A template for creating a bot using botspot"
