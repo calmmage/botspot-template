@@ -12,7 +12,7 @@ packages = [
 python = ">=3.11,<4.0"
 # calmlib>=1.0.11
 calmlib = { git = "https://github.com/calmmage/calmlib.git", branch = "main" }
-# botspot>=0.3.0
+# botspot>=0.5.2
 botspot = { git = "https://github.com/calmmage/botspot.git", branch = "main" }
 
 loguru = ">=0.7"
@@ -125,7 +125,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [template]
-version = "0.2.1"
+version = "0.2.2"
 url = "https://github.com/calmmage/botspot-template.git"
 author = "Petr Lavrov <me@petrlavrov.com>"
 description = "A template for creating a bot using botspot"
