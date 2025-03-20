@@ -2,8 +2,8 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
+from botspot.commands_menu import botspot_command
 from botspot.user_interactions import ask_user, ask_user_choice
-from botspot.commands_menu import add_command
 from botspot.utils import reply_safe
 
 router = Router()
@@ -17,7 +17,7 @@ TIMEZONE_SETUP_METHODS = [
 COMMON_TIMEZONES = ["UTC", "Europe/London", "Europe/Paris", "America/New_York", "Asia/Tokyo"]
 
 
-@add_command("timezone", "Set your timezone", visibility="hidden")
+@botspot_command("timezone", "Set your timezone", visibility="hidden")
 @router.message(Command("timezone"))
 async def timezone_setup(message: Message, state) -> None:
     """Interactive timezone setup with multiple input methods"""
@@ -57,7 +57,7 @@ async def timezone_setup(message: Message, state) -> None:
             await reply_safe(message, "Timezone setup cancelled.")
 
 
-@add_command("error_test", "Test error handling", visibility="hidden")
+@botspot_command("error_test", "Test error handling", visibility="hidden")
 @router.message(Command("error_test"))
 async def error_test(message: Message) -> None:
     """Demonstrate error handling"""
