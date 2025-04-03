@@ -1,18 +1,15 @@
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from botspot.core.bot_manager import BotManager
 from calmlib.utils import setup_logger, heartbeat_for_sync
 from dotenv import load_dotenv
 from loguru import logger
 from pathlib import Path
 
-from botspot.core.bot_manager import BotManager
-
-# Load environment variables
-load_dotenv(Path(__file__).parent.parent / ".env")
-
+from ._app import App
+from .router import router as main_router
 from .routers.settings import router as settings_router
-from .router import app, router as main_router
 
 # Initialize bot and dispatcher
 dp = Dispatcher()
@@ -40,6 +37,9 @@ def main(debug=False) -> None:
 
     # Setup dispatcher with our components
     bm.setup_dispatcher(dp)
+
+    app = App()
+    dp["app"] = app
 
     # Start polling
     dp.run_polling(bot)
