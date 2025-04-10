@@ -3,6 +3,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from calmlib.utils import setup_logger, heartbeat_for_sync
 from loguru import logger
+from dotenv import load_dotenv
 
 from botspot.core.bot_manager import BotManager
 from ._app import App
@@ -44,4 +45,5 @@ def main(debug=False) -> None:
 
 
 if __name__ == "__main__":
+    load_dotenv()
     main()
