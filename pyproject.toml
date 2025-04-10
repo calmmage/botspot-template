@@ -125,7 +125,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [template]
-version = "0.3.0"
+version = "0.3.1"
 url = "https://github.com/calmmage/botspot-template.git"
 author = "Petr Lavrov <me@petrlavrov.com>"
 description = "A template for creating a bot using botspot"
