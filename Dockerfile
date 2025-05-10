@@ -17,8 +17,5 @@ COPY . .
 RUN poetry config virtualenvs.create false 
 RUN poetry install --only main,extras
 
-# Copy application code
-COPY app/ .
-
 # Run the bot
 CMD ["poetry", "run", "python", "run.py"]
