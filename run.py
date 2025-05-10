@@ -2,7 +2,7 @@ import argparse
 import os
 from dotenv import load_dotenv
 
-from app.bot import main
+from src.bot import main
 
 load_dotenv()
 

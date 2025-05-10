@@ -18,7 +18,7 @@ repos:
       - id: vulture
         args: [
           "--min-confidence", "80",
-          "app"  # project_name - path to scan
+          "src"  # project_name - path to scan
         ]
         files: ^.*\.py$
         exclude: ^(.git|.venv|venv|build|dist)/.*$
@@ -32,7 +32,7 @@ repos:
         pass_filenames: false
         always_run: true
         args: [
-          "--cov=app",  # project_name - path to scan
+          "--cov=src",  # project_name - path to scan
           "--cov-report=xml",
           "--cov-fail-under=50",
         ]

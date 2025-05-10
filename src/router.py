@@ -4,7 +4,7 @@ from aiogram.types import Message
 from botspot import commands_menu
 from botspot.utils import send_safe
 
-from app._app import App
+from src._app import App
 
 router = Router()
 

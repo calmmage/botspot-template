@@ -7,9 +7,9 @@ from calmlib.utils import setup_logger, heartbeat_for_sync
 from dotenv import load_dotenv
 from loguru import logger
 
-from app._app import App
-from app.router import router as main_router
-from app.routers.settings import router as settings_router
+from src._app import App
+from src.router import router as main_router
+from src.routers.settings import router as settings_router
 from botspot.core.bot_manager import BotManager
 
 
