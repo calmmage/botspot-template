@@ -1,30 +1,16 @@
 repos:
-#  - repo: local
-#    hooks:
-#      - id: jupyter-nb-clear-output
-#        name: jupyter-nb-clear-output
-#        language: system
-#        entry: jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace
+  #  - repo: local
+  #    hooks:
+  #      - id: jupyter-nb-clear-output
+  #        name: jupyter-nb-clear-output
+  #        language: system
+  #        entry: jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace
   - repo: https://github.com/kynan/nbstripout
     rev: 0.5.0
     hooks:
       - id: nbstripout
         files: \.ipynb$
         stages: [ pre-commit ]
-
-  - repo: https://github.com/psf/black
-    rev: 24.2.0
-    hooks:
-      - id: black
-        args: [ --line-length=100 ]
-        name: black
-        description: "Black: The uncompromising Python code formatter (with Jupyter Notebook support)"
-        entry: black
-        language: python
-        minimum_pre_commit_version: 2.9.2
-        require_serial: true
-        types_or: [python, pyi, jupyter]
-        additional_dependencies: [".[jupyter]"]
 
   - repo: https://github.com/jendrikseipp/vulture
     rev: 'v2.10'
@@ -36,30 +22,6 @@ repos:
         ]
         files: ^.*\.py$
         exclude: ^(.git|.venv|venv|build|dist)/.*$
-
-  - repo: https://github.com/pycqa/flake8
-    rev: '7.0.0'
-    hooks:
-      - id: flake8
-        additional_dependencies: [
-          'flake8-docstrings',
-          'flake8-bugbear',
-          'flake8-comprehensions',
-          'flake8-simplify',
-        ]
-        args: [
-          "--max-line-length=100",
-          "--exclude=.venv,.git,__pycache__,build,dist",
-          "--ignore=E203,W503",  # Ignore some style errors that conflict with other tools
-        ]
-        files: ^app/.*\.py$ # project_name - path to scan
-
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
-        name: isort (python)
-        files: ^.*\.py$
 
   - repo: local
     hooks:
@@ -79,3 +41,21 @@ repos:
     rev: v3.19.0
     hooks:
       - id: pyupgrade
+
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.399
+    hooks:
+      - id: pyright
+        additional_dependencies: ["pyright==1.1.399"]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.7.4
+    hooks:
+      # Run the linter.
+      - id: ruff
+        types_or: [ python, pyi ]
+        args: [ --fix ]
+      # Run the formatter.
+      - id: ruff-format
+        types_or: [ python, pyi ]
