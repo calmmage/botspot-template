@@ -13,7 +13,7 @@ from src.routers.settings import router as settings_router
 from botspot.core.bot_manager import BotManager
 
 
-@heartbeat_for_sync(App.name)
+# @heartbeat_for_sync(App.name)
 def main(debug=False) -> None:
     setup_logger(logger, level="DEBUG" if debug else "INFO")
 

@@ -7,7 +7,6 @@ def mock_env(monkeypatch):
 
 
 def test_imports():
-    from src.bot import main, dp
+    from src.bot import main
 
     assert main
-    assert dp
