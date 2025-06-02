@@ -11,5 +11,6 @@ except PackageNotFoundError:
     from pathlib import Path
 
     path = Path(__file__).parent.parent / "pyproject.toml"
-    __version__ = toml.load(path)["tool"]["poetry"]["version"]
+    __version__ = toml.load(path)["project"]["version"]
     del toml, Path, path
+
