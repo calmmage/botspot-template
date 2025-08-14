@@ -214,3 +214,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 /.cursorindexingignore
+
+# AI instruction files (generated)
+CLAUDE.md
+GEMINI.md
+.cursorrules
+
+# AI instruction files (generated)
+.claude
