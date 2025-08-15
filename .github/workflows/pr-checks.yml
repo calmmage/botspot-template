@@ -1,0 +1,104 @@
+name: Code Quality
+
+env:
+  COVERAGE_THRESHOLD: 50
+  VULTURE_MIN_CONFIDENCE: 80
+  MAIN_SCAN_PATHS: 'src calmlib tools tests'
+  EXTRA_SCAN_PATHS: 'experiments'
+  ALL_SCAN_PATHS: 'src calmlib tools experiments tests'
+  COVERAGE_PATHS_FLAGS: '--cov=src --cov=calmlib --cov=tools'
+
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  ruff-check:
+    name: Ruff
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.13" ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup-python-env
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run Ruff linter
+        run: uv run ruff check --output-format=github ${{ env.MAIN_SCAN_PATHS }}
+
+      - name: Run Ruff formatter check
+        run: uv run ruff format --check --diff ${{ env.MAIN_SCAN_PATHS }}
+
+  dead-code-check:
+    name: Vulture
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.13" ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup-python-env
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run Vulture dead code detector
+        run: uv run vulture --min-confidence ${{ env.VULTURE_MIN_CONFIDENCE }} ${{ env.MAIN_SCAN_PATHS }}
+
+  coverage:
+    name: Coverage Report
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.13" ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup-python-env
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run coverage analysis
+        run: |
+          uv run pytest ${{ env.ALL_SCAN_PATHS }} \
+            ${{ env.COVERAGE_PATHS_FLAGS }} \
+            --cov-report=xml \
+            --cov-report=term \
+            --cov-fail-under=${{ env.COVERAGE_THRESHOLD }}
+
+  #      - name: Upload coverage to Codecov (optional)
+  #        uses: codecov/codecov-action@v3
+  #        if: always()
+  #        with:
+  #          file: ./coverage.xml
+  #          fail_ci_if_error: false
+
+  experiments-check:
+    name: Experiments Report (Non-blocking)
+    runs-on: ubuntu-latest
+    continue-on-error: true  # This makes the job non-blocking
+    strategy:
+      matrix:
+        python-version: [ "3.13" ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup-python-env
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run Ruff on experiments (non-blocking)
+        run: |
+          echo "🧪 Running quality checks on experiments (non-blocking)..."
+          uv run ruff check --output-format=github ${{ env.EXTRA_SCAN_PATHS }} || echo "⚠️ Ruff found issues in experiments"
+
+      - name: Run Vulture on experiments (non-blocking)
+        run: |
+          uv run vulture --min-confidence 80 ${{ env.EXTRA_SCAN_PATHS }} || echo "⚠️ Vulture found dead code in experiments"
+
+      - name: Run basic tests on experiments (non-blocking)
+        run: |
+          if [ -d "${{ env.EXTRA_SCAN_PATHS }}" ]; then
+            uv run pytest ${{ env.EXTRA_SCAN_PATHS }} --tb=short || echo "⚠️ Some experiment tests failed"
+          else
+            echo "📝 No experiments directory found"
+          fi
