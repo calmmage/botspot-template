@@ -9,7 +9,6 @@ from loguru import logger
 
 from src._app import App
 from src.router import router as main_router
-from src.routers.settings import router as settings_router
 from botspot.core.bot_manager import BotManager
 
 
@@ -20,7 +19,6 @@ def main(debug=False) -> None:
     # Initialize bot and dispatcher
     dp = Dispatcher()
     dp.include_router(main_router)
-    dp.include_router(settings_router)
 
     app = App()
     dp["app"] = app

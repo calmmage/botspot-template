@@ -3,10 +3,6 @@ name: Code Quality
 env:
   COVERAGE_THRESHOLD: 50
   VULTURE_MIN_CONFIDENCE: 80
-  MAIN_SCAN_PATHS: 'src calmlib tools tests'
-  EXTRA_SCAN_PATHS: 'experiments'
-  ALL_SCAN_PATHS: 'src calmlib tools experiments tests'
-  COVERAGE_PATHS_FLAGS: '--cov=src --cov=calmlib --cov=tools'
 
 on: [ push ]
 
