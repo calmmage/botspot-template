@@ -1,4 +1,4 @@
-FROM python:3.12-slim-bookworm
+FROM python:3.13-slim-bookworm
 
 WORKDIR /app
 
@@ -17,4 +17,4 @@ COPY . .
 RUN uv sync --group extras
 
 # Run the bot
-CMD ["uv", "run", "python", "run.py"]
+CMD ["uv", "run", "python", "src/bot.py"]
