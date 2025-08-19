@@ -12,6 +12,7 @@ router = Router()
 @commands_menu.botspot_command("start", "Start the bot")
 @router.message(CommandStart())
 async def start_handler(message: Message, app: App):
+    assert message.from_user is not None
     await send_safe(
         message.chat.id,
         f"Hello, {html.bold(message.from_user.full_name)}!\n"
