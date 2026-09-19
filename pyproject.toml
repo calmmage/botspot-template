@@ -1,26 +1,23 @@
 [project]
 name = "project-name"
 version = "0.0.1"
-description = ""
+description = "A Telegram bot built with botspot"
 readme = "README.md"
 authors = [
     {name = "Petr Lavrov", email = "me@petrlavrov.com"},
 ]
-requires-python = "<4.0,>=3.12"
+requires-python = ">=3.12,<4.0"
 dependencies = [
     "calmlib @ git+https://github.com/calmmage/calmlib.git@main",
     "botspot @ git+https://github.com/calmmage/botspot.git@main",
     "loguru>=0.7",
     "toml>=0.10",
     "python-dotenv",
-    "pydantic<3.0.0,>=2.10.6",
-    "pydantic-settings<3.0.0,>=2.7.1",
+    "pydantic>=2.11,<3.0",
+    "pydantic-settings>=2.11,<3.0",
     "motor",
-    "apscheduler",
-    "langchain",
-    "langchain-openai",
-    "langchain-community",
-    "langchain-anthropic",
+    "apscheduler>=3.10.4,<4.0.0",
+    "litellm>=1.63,<2.0",
 ]
 
 [build-system]
@@ -34,94 +31,58 @@ allow-direct-references = true
 packages = ["src"]
 
 [dependency-groups]
-extras = [
-    # dependencies for extra features
-
-    # Main
-    ## Pydantic
-    #pydantic = ">=2"            # Data validation and settings management
-    #pydantic-settings = ">=2"   # Pydantic settings management
-
-    # git ops
-    #PyGithub = "*"              # GitHub API client
-    #gitpython = "*"             # Git repository interface
-
-    # api
-    #fastapi = "*"               # High-performance API framework
-    #httpx = "*"                 # Async HTTP client
-
-    # cli
-    #click = "*"                 # CLI creation toolkit
-    #typer = "*"                 # Easy CLI building
-
-    # data, databases
-    #pymongo = "*"                 # MongoDB client
-    #mongoengine = "*"            # MongoDB ORM
-    #PyDrive = "*"                # Google Drive API client
-    #protobuf = "*"               # Protocol buffers
-    #dropbox = "*"                # Dropbox API client
-
-    # utils
-    #pytz = "*"                  # Timezone definitions
-    #retry = "*"                 # Retry decorator
-    #nltk = "*"                  # Natural language toolkit
-    #easydict = ">=1.10"         # Easy access to dict keys - dotdict
-    #pydub = ">=0.25"             # Audio manipulation
-    #apscheduler = ">=3"         # Scheduling library
-    #pyperclip = "*"              # Copying to clipboard
-    #aiolimiter = ">=1.1"         # Async rate limiting
-    #deepl = ">=1.18"             # DeepL API client
-
-    # LLM, GPT, AI
-    #tiktoken = ">=0.7"            # Tokenization for OpenAI models
-    #openai = ">=1.45"             # OpenAI API client
-    #langchain = ">=0.3"            # Language model framework
-    #langchain-openai = ">=0.2"     # OpenAI integration for LangChain
-    #langchain-community = "*"      # Community extensions for LangChain
-    #langchain-anthropic = ">=0.2"  # Anthropic integration for LangChain
-    #langfuse = "*"                 # Language model analytics
-    #assemblyai = "*"              # Speech-to-text API
-    #whisperx = { git = "https://github.com/m-bain/whisperX.git", branch = "main" }  # Advanced Whisper model
-
-    # Misc
-    #ipykernel = "*"             # IPython kernel
-    #ipywidgets = "*"            # Interactive widgets for Jupyter
-    #joblib = "*"                # Lightweight pipelining
-    #paramiko = "*"              # SSH2 protocol library
-    #scp = "*"                   # Secure copy
-    #pymorphy2 = "*"             # Morphological analyzer
-]
+extras = []
 test = [
-    "pytest>=6",
-    "isort<7.0.0,>=6.0.0",
-    "vulture<3.0,>=2.14",
-    "pytest-cov<7.0.0,>=6.1.1",
-    "pytest-asyncio<2.0.0,>=1.0.0",
-    "pytest-mock<4.0.0,>=3.14.1",
-    "pyupgrade<4.0.0,>=3.20.0",
-    "pyright<2.0.0,>=1.1.401",
-    "ruff<1.0.0,>=0.11.12",
+    "pytest>=8.3.5",
+    "isort>=6.0.0,<7.0.0",
+    "vulture>=2.14,<3.0",
+    "pytest-cov>=6.1.1,<7.0.0",
+    "pytest-asyncio>=1.0.0,<2.0.0",
+    "pytest-mock>=3.14.1,<4.0.0",
+    "pyupgrade>=3.20.0,<4.0.0",
+    "pyright>=1.1.401,<2.0.0",
+    "ruff>=0.11.12,<1.0.0",
 ]
-docs = [
-    #mkdocs = ">=1.6"
-]
+docs = []
 dev = [
     "jupyter>=1.0.0",
     "pre-commit>=3.8.0",
     "tqdm",
-    #jupyter-nbextensions-configurator = "*"
-    #jupyter_contrib_nbextensions = "*"
-
-    ## data analysis, research
-    #pandas = ">=2.0.0"          # Data manipulation and analysis
-    #seaborn = "*"               # Statistical data visualization
-    #bokeh = "*"                 # Interactive visualizations
-    #matplotlib = "*"            # Plotting library
-    #numpy = "*"                 # Numerical computing
 ]
 
+[tool.uv]
+default-groups = ["extras", "dev", "test", "docs"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+asyncio_mode = "auto"
+addopts = "--tb=short --no-header -v"
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "tests/*",
+    "**/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+]
+show_missing = true
+
+[tool.ruff]
+line-length = 100
+
+[tool.pyright]
+include = ["src", "tests"]
+
 [template]
-version = "2.0.3"
+version = "3.0.0"
 url = "https://github.com/calmmage/botspot-template.git"
 author = "Petr Lavrov <me@petrlavrov.com>"
 description = "A template for creating a bot using botspot"
