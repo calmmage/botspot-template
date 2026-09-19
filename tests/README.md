@@ -1,3 +1,4 @@
 # Tests
 
-Add your tests to this dir.
+`make test` runs pytest on this directory. Doctor runs `tests/test_imports.py` only.
+No Telegram token is required.
