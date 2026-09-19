@@ -1,91 +1,112 @@
-# Botspot Template
+<h1 align="center">
+  <img src="docs/examples/logo.png" alt="Botspot Template" width="64" valign="middle" /> Botspot Template
+</h1>
 
-A template for creating Telegram bots using [botspot](https://github.com/calmmage/botspot) — components on top of [aiogram](https://docs.aiogram.dev).
+<p align="center">
+  <strong>A template for creating Telegram bots using botspot, an aiogram framework with batteries included.</strong>
+</p>
 
-Needs **Git**, **Python ≥ 3.12**, **[uv](https://docs.astral.sh/uv/getting-started/installation/)**, and **make**. Default runtime is Homebrew **3.13**.
+<p align="center">
+  <a href="https://github.com/calmmage/botspot-template"><img src="https://img.shields.io/github/stars/calmmage/botspot-template?style=flat&amp;label=%E2%98%85&amp;color=08C" alt="GitHub stars" /></a>
+  <a href="https://github.com/calmmage/botspot-template/actions/workflows/push-checks.yml"><img src="https://github.com/calmmage/botspot-template/actions/workflows/push-checks.yml/badge.svg" alt="push-checks" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-08C?style=flat" alt="License: GPL-3.0" /></a>
+  <img src="https://img.shields.io/badge/python-3.12%2B-3776AB?style=flat" alt="Python 3.12+" />
+  <img src="https://img.shields.io/badge/runtime-aiogram-6e7681?style=flat" alt="aiogram runtime" />
+</p>
 
-## Quick start
+<p align="center">
+  <a href="https://github.com/calmmage/botspot"><kbd>botspot</kbd></a>
+  &nbsp;
+  <a href="https://docs.aiogram.dev"><kbd>aiogram</kbd></a>
+  &nbsp;
+  <a href="https://core.telegram.org/bots"><kbd>Telegram Bot API</kbd></a>
+</p>
+
+<h3 align="center"><a href="#install"><ins>Use this template</ins></a></h3>
+
+<p align="center">
+  <a href="docs/examples/hero.png"><img src="docs/examples/hero.png" alt="Botspot Template src/router.py start handler and src/bot.py BotManager wiring" width="960" /></a>
+</p>
+
+Clone, set a bot token, run. [botspot](https://github.com/calmmage/botspot) wires the command menu, error handler, and `send_safe` into your [aiogram](https://docs.aiogram.dev) dispatcher.
+
+## Install
+
+Needs **Python ≥ 3.12**, **[uv](https://docs.astral.sh/uv/)**, **make**, and a bot token from [@BotFather](https://t.me/BotFather).
+
+GitHub: **[Use this template](https://github.com/calmmage/botspot-template/generate)**. Or clone:
 
 ```bash
 git clone https://github.com/calmmage/botspot-template.git your-bot-name
 cd your-bot-name
-make wizard                 # prints help, uv sync, then make doctor
+make wizard                 # help, then make setup (uv sync + doctor)
+cp example.env .env         # set TELEGRAM_BOT_TOKEN
+make run                    # uv run python run.py
 ```
 
-Equivalent: `make setup`. That is the only install path. Setup creates a local `.venv`. It does not write a bot token, start polling, or install a LaunchAgent.
+Equivalent live start: `uv run python run.py`. `make setup` is the only install path. Done when `make doctor` prints `cli: ok`. Doctor and `make test` need no Telegram token.
 
-Done when `make doctor` prints `cli: ok`. Doctor and `make test` need no Telegram token.
+Enable components in `.env`; see `example.env` for names.
 
-### Run the bot
+**Agents:** follow **[AGENTS.md](AGENTS.md)** in this repo, **[botspot AGENTS.md](https://github.com/calmmage/botspot/blob/main/AGENTS.md)** for the library, and **[botspot_101.md](botspot_101.md)** for component snippets.
 
-```bash
-cp example.env .env
-# set TELEGRAM_BOT_TOKEN from @BotFather
-make run
-```
+### Give this to an agent
 
-Optional: an LLM key (`ANTHROPIC_API_KEY` or `OPENAI_API_KEY`) for `/ask`. MongoDB if you enable `user_data`, `access_control`, `subscription_manager`, queues, or `chat_binder`.
+Paste:
+
+> Clone https://github.com/calmmage/botspot-template and follow **[AGENTS.md](AGENTS.md)**. Install [uv](https://docs.astral.sh/uv/) if missing. Do not invent an install path. A Telegram bot token from [@BotFather](https://t.me/BotFather) is the human's — put it in `.env` as `TELEGRAM_BOT_TOKEN`. Then `make wizard`, `cp example.env .env`, and `make run`.
+
+## What you get
+
+| Surface | What it is |
+|---------|------------|
+| **App** | `src/app.py` — typed `AppConfig` (`TELEGRAM_BOT_TOKEN`) |
+| **Bot** | `src/bot.py` — `BotManager` enables error handler, `ask_user`, command menu, LLM provider, then polling |
+| **Router** | `src/router.py` — `@botspot_command` `/start`, `/help`, `/ask`, friends-only |
+| **Config** | `example.env` — every current botspot component prefix |
+| **Tests** | `make test` — `uv run pytest tests/` |
+| **Docker** | `Dockerfile` runs `uv run python run.py` |
 
 ## Project structure
 
 ```
 .
 ├── src/
-│   ├── app.py           # typed AppConfig + App
+│   ├── app.py           # AppConfig + App
 │   ├── bot.py           # BotManager + polling
 │   ├── router.py        # commands (visibility, t(), /ask, friends-only)
 │   ├── i18n.py          # botspot t() strings (en/ru)
 │   └── __init__.py
-├── run.py               # entry point (docker / make run)
-├── example.env          # every current botspot component prefix
+├── run.py               # entry point (make run / docker)
+├── docs/examples/       # logo, favicon, hero screenshot
+├── example.env          # component flags (placeholders only)
+├── botspot_101.md       # component snippets
+├── AGENTS.md            # agent install wizard
 ├── Makefile             # wizard / setup / doctor / check / test / run
-├── pyproject.toml
 ├── Dockerfile
-└── docker-compose.yaml
+└── pyproject.toml
 ```
 
-## Configuration
+## Docs
 
-Environment variables. See `example.env` for the full list. Prefixes match `BotspotSettings`:
-
-| Prefix | Component |
+| | |
 |---|---|
-| `TELEGRAM_BOT_TOKEN` | Bot token from @BotFather |
-| `BOTSPOT_ADMINS_STR` / `BOTSPOT_FRIENDS_STR` | Access lists |
-| `BOTSPOT_LLM_PROVIDER_` | LLM `/ask` |
-| `BOTSPOT_MONGO_DATABASE_` | MongoDB |
-| `BOTSPOT_POSTGRES_DATABASE_` | PostgreSQL |
-| `BOTSPOT_USER_DATA_` | User records |
-| `BOTSPOT_ACCESS_CONTROL_` | Persistent friends/admins |
-| `BOTSPOT_SUBSCRIPTION_MANAGER_` | Credits, Stars, trial |
-| `BOTSPOT_I18N_` | en/ru middleware |
-| `BOTSPOT_ERROR_HANDLER_` | Global error handler |
-| `BOTSPOT_BOT_COMMANDS_MENU_` | Telegram command menu |
+| This page, install, screenshot | [README.md](README.md) |
+| In-repo docs index | [docs/index.md](docs/index.md) |
+| Component snippets | [botspot_101.md](botspot_101.md) |
+| Agent install | [AGENTS.md](AGENTS.md) |
+| Library | [calmmage/botspot](https://github.com/calmmage/botspot) · [AGENTS.md](https://github.com/calmmage/botspot/blob/main/AGENTS.md) |
+| Vulnerability reports | [SECURITY.md](SECURITY.md) |
 
-Component cheat sheet: [botspot_101.md](botspot_101.md). Library examples: [botspot/examples](https://github.com/calmmage/botspot/tree/main/examples).
-
-## Development
+Docs stay in this repository and are linked from the README. GitHub Pages is not used.
 
 ```bash
-make doctor    # cli: ok
-make test      # pytest, no token
-make check     # ruff / vulture / pyright
-make run       # needs .env
+make wizard   # install
+make doctor   # cli: ok
+make test     # pytest, no token
+make run      # needs .env
 ```
-
-```bash
-pre-commit install
-```
-
-## Docker
-
-```bash
-cp example.env .env
-docker compose up --build
-```
-
-The compose file starts MongoDB and the bot. The bot image uses `uv sync --frozen` and `run.py`.
 
 ## License
 
-GNU General Public License v3.0 — see [LICENSE](LICENSE).
+GPL-3.0 — see [LICENSE](LICENSE). Vulnerabilities: [SECURITY.md](SECURITY.md).
