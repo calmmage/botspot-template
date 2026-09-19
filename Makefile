@@ -22,7 +22,12 @@ help:
 
 wizard:
 	@$(MAKE) help
+	@echo "Agent install wizard — the steps live in AGENTS.md."
+	@echo "  1. open AGENTS.md"
+	@echo "  2. this target runs: make setup"
+	@echo ""
 	@$(MAKE) setup
+	@echo ""
 	@echo "Done when: \`make doctor\` prints \`cli: ok\`."
 	@echo "Offline (no Telegram token): make doctor"
 	@echo "Live bot (human): cp example.env .env, set TELEGRAM_BOT_TOKEN, then make run"
