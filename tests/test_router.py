@@ -3,6 +3,7 @@
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+from pydantic import SecretStr
 
 from src.app import App
 from src.router import ask_handler, friends_handler, help_handler, start_handler
@@ -18,9 +19,16 @@ def _message(*, text="/start", user_id=42, full_name="Ada", chat_id=99):
     return message
 
 
+def _call_text(mock: AsyncMock) -> str:
+    mock.assert_awaited_once()
+    call = mock.await_args
+    assert call is not None
+    return call.args[1]
+
+
 @pytest.fixture
 def app():
-    return App(telegram_bot_token="test_token")
+    return App(telegram_bot_token=SecretStr("test_token"))
 
 
 @pytest.mark.asyncio
@@ -28,8 +36,7 @@ async def test_start_handler(app):
     message = _message(text="/start")
     with patch("src.router.send_safe", new_callable=AsyncMock) as send:
         await start_handler(message, app)
-    send.assert_awaited_once()
-    body = send.await_args.args[1]
+    body = _call_text(send)
     assert "Ada" in body
     assert app.name in body
 
@@ -39,8 +46,7 @@ async def test_help_handler(app):
     message = _message(text="/help")
     with patch("src.router.send_safe", new_callable=AsyncMock) as send:
         await help_handler(message, app)
-    send.assert_awaited_once()
-    body = send.await_args.args[1]
+    body = _call_text(send)
     assert "/ask" in body
     assert app.name in body
 
@@ -50,8 +56,8 @@ async def test_ask_handler_usage():
     message = _message(text="/ask")
     with patch("src.router.send_safe", new_callable=AsyncMock) as send:
         await ask_handler(message)
-    send.assert_awaited_once()
-    assert "Usage" in send.await_args.args[1] or "ask" in send.await_args.args[1].lower()
+    body = _call_text(send)
+    assert "Usage" in body or "ask" in body.lower()
 
 
 @pytest.mark.asyncio
@@ -63,9 +69,10 @@ async def test_ask_handler_queries_llm():
     ):
         await ask_handler(message)
     llm.assert_awaited_once()
-    assert llm.await_args.kwargs["prompt"] == "what is 2+2"
-    send.assert_awaited_once()
-    assert send.await_args.args[1] == "4"
+    llm_call = llm.await_args
+    assert llm_call is not None
+    assert llm_call.kwargs["prompt"] == "what is 2+2"
+    assert _call_text(send) == "4"
 
 
 @pytest.mark.asyncio
@@ -77,8 +84,7 @@ async def test_friends_handler_denied():
         patch("src.router.send_safe", new_callable=AsyncMock) as send,
     ):
         await friends_handler(message)
-    send.assert_awaited_once()
-    body = send.await_args.args[1]
+    body = _call_text(send)
     assert "friend" in body.lower() or "друг" in body.lower()
 
 
@@ -91,6 +97,5 @@ async def test_friends_handler_allowed():
         patch("src.router.send_safe", new_callable=AsyncMock) as send,
     ):
         await friends_handler(message)
-    send.assert_awaited_once()
-    body = send.await_args.args[1]
+    body = _call_text(send)
     assert "Hello" in body or "Привет" in body

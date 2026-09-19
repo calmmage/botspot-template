@@ -47,7 +47,7 @@ check:
 	-uv run ruff check src tests
 	-uv run ruff format --check src tests
 	-uv run vulture --min-confidence 80 src
-	-uv run pyright src
+	-uv run pyright
 
 fix:
 	-uv run ruff check --fix .
