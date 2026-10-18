@@ -2,19 +2,16 @@ FROM python:3.13-slim-bookworm
 
 WORKDIR /app
 
-# Install system dependencies
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl git && \
+    apt-get install -y --no-install-recommends curl git ca-certificates gcc build-essential && \
     rm -rf /var/lib/apt/lists/*
 
-# Install uv
-RUN pip install --no-cache-dir uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-# Copy the entire project files
-COPY . .
+COPY pyproject.toml uv.lock README.md ./
+COPY src ./src
+COPY run.py ./
 
-# Install dependencies with uv sync, including specified groups
-RUN uv sync --group extras
+RUN uv sync --frozen --no-default-groups
 
-# Run the bot
-CMD ["uv", "run", "python", "src/bot.py"]
+CMD ["uv", "run", "--no-dev", "python", "run.py"]

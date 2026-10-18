@@ -1,6 +1,6 @@
 services:
   mongodb:
-    image: mongo:latest
+    image: mongo:7
     ports:
       - "27017:27017"
     volumes:
@@ -9,34 +9,29 @@ services:
   mongo-express:
     image: mongo-express
     ports:
-      - "${MONGO_EXPRESS_PORT}:8081"
+      - "${MONGO_EXPRESS_PORT:-8081}:8081"
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongodb
       - ME_CONFIG_MONGODB_PORT=27017
       - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
-      - ME_CONFIG_BASICAUTH_USERNAME=admin
-      - ME_CONFIG_BASICAUTH_PASSWORD=pass
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_USERNAME:-admin}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_PASSWORD:-change-me}
     depends_on:
       - mongodb
 
   bot:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "${API_PORT}:8000"
+    env_file:
+      - .env
     environment:
-      - MONGODB_URL=${MONGODB_URL}
-      - MONGODB_DATABASE=${MONGODB_DATABASE}
+      BOTSPOT_MONGO_DATABASE_CONN_STR: mongodb://mongodb:27017
+      BOTSPOT_MONGO_DATABASE_DATABASE: project-name
     depends_on:
       mongodb:
         condition: service_started
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+    restart: unless-stopped
 
 volumes:
-  mongodb_data: 
+  mongodb_data:

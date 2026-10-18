@@ -1,4 +1,3 @@
-
 from importlib.metadata import PackageNotFoundError
 
 try:
@@ -13,4 +12,3 @@ except PackageNotFoundError:
     path = Path(__file__).parent.parent / "pyproject.toml"
     __version__ = toml.load(path)["project"]["version"]
     del toml, Path, path
-
